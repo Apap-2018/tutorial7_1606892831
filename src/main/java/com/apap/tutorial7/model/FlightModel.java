@@ -1,7 +1,7 @@
 package com.apap.tutorial7.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -80,10 +80,10 @@ public class FlightModel implements Serializable {
         this.destination = destination;
     }
     /**
-     * @param time the time to set
+     * @param date the time to set
      */
-    public void setTime(Date time) {
-        this.time = time;
+    public void setTime(Date date) {
+        this.time = date;
     }
     /**
      * @param pilot the pilot to set

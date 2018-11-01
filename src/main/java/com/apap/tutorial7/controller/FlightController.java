@@ -3,11 +3,13 @@ package com.apap.tutorial7.controller;
 import com.apap.tutorial7.model.FlightModel;
 import com.apap.tutorial7.rest.Setting;
 import com.apap.tutorial7.service.FlightService;
-import java.sql.Date;
+
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,35 +55,34 @@ public class FlightController {
     
     @PutMapping(value="/update/{flightId}")
     public String updateFlightSubmit(@PathVariable("flightId") long flightId,
-    	@RequestParam("destination") String destination,
-    	@RequestParam("origin") String origin,
-    	@RequestParam("time") Date time ){
+    	@RequestParam("destination") Optional<String> destination,
+    	@RequestParam("origin") Optional<String> origin,
+    	@RequestParam("time") @DateTimeFormat(pattern="yyyy-MM-dd") Optional<Date>time ){
     	FlightModel flight = flightService.getFlightDetailById(flightId).get();
     	if(flight.equals(null)) {
     		return "Couldn't find your flight";
     	}
     	
-    	flight.setDestination(destination);
-    	flight.setOrigin(origin);
-    	flight.setTime(time);
-//    	flightService.updateflight(flightId,flight);
-    	return "flight update success";
-   
+    	else {
+    		if(destination.isPresent()) {
+    			flight.setDestination(destination.get());
+    		}
+    		if(origin.isPresent()) {
+    			flight.setOrigin(origin.get());
+    		}
+    		if(time.isPresent()) {
+    			flight.setTime(time.get());
+    		}
+    		flightService.updateflight(flight);
+        	return "flight update success";
+    	}
     }
     
-    @Autowired
-    RestTemplate restTemplate;
-
-    @Bean
-    public RestTemplate rest() {
-    	return new RestTemplate();
+    @GetMapping()
+    public Object airport(@RequestParam("city") String city) throws Exception {
+    	String path = Setting.airportUrl+"&term="+city+"&country=ID";
+    	RestTemplate rest = new RestTemplate();
+    	Object airport = rest.getForObject(path, Object.class);
+    	return airport;
     }
-    
-    @GetMapping(value="/airport/{city}")
-    public String getStatus(@PathVariable("city") String city) throws Exception{
-    	String path = Setting.flightUrl + "/flight?city="+ city;
-    	return restTemplate.getForEntity(path, String.class).getBody();
-    	
-    }
-        
 }

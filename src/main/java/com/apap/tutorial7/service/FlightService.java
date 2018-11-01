@@ -18,8 +18,8 @@ public interface FlightService {
 	Optional<FlightModel> getFlightDetailById(long flightId);
 
 	void deleteFlight(FlightModel flight);
-
-	void updateFlight(FlightModel newflight);
 	
 	List<FlightModel> findAll();
+
+	void updateflight(FlightModel flight);
 }

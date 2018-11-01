@@ -37,9 +37,9 @@ public class PilotServiceImpl implements PilotService {
     
     @Override
 	public void updatePilot(long pilotId, PilotModel pilotBaru) {
-//		PilotModel pilotLama = this.getPilotDetailByLicenseNumber(pilotBaru.getLicenseNumber());
-//		pilotLama.setName(pilotBaru.getName());
-//		pilotLama.setFlyHour(pilotBaru.getFlyHour());
+		PilotModel pilotLama = pilotDb.getOne(pilotId);
+		pilotLama.setName(pilotBaru.getName());
+		pilotLama.setFlyHour(pilotBaru.getFlyHour());
 	}
 
 	@Override

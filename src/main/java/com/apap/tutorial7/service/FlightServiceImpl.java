@@ -34,16 +34,6 @@ public class FlightServiceImpl implements FlightService {
         return flightDb.findByFlightNumber(flightNumber);
     }
 
-    @Override
-	public void updateFlight(FlightModel newflight) {
-//		FlightModel old = this.getFlightDetailById(newflight.getId());
-//		System.out.println(old.getFlightNumber());
-//		old.setFlightNumber(newflight.getFlightNumber());
-//		old.setOrigin(newflight.getOrigin());
-//		old.setDestination(newflight.getDestination());
-//		old.setTime(newflight.getTime());
-	}
-
 	@Override
 	public Optional<FlightModel> getFlightDetailById(long flightId) {
 		// TODO Auto-generated method stub
@@ -60,5 +50,14 @@ public class FlightServiceImpl implements FlightService {
 	public List<FlightModel> findAll() {
 		// TODO Auto-generated method stub
 		return flightDb.findAll();
+	}
+
+	@Override
+	public void updateflight(FlightModel flight) {
+		// TODO Auto-generated method stub
+		FlightModel flightBaru = flightDb.getOne(flight.getId());
+		flightBaru.setDestination(flight.getDestination());
+		flightBaru.setOrigin(flight.getOrigin());
+		flightBaru.setTime(flight.getTime());
 	}
 }
